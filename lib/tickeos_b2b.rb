@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-module TickeosB2b
-  VERSION = "0.1.0"
-end
+require_relative 'tickeos_b2b/client'
+require_relative 'tickeos_b2b/error'
+require_relative 'tickeos_b2b/version'
