@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in tickeos-b2b.gemspec
+# Specify your gem's dependencies in tickeos_b2b.gemspec
 gemspec
 
 gem "rake", "~> 12.0"
