@@ -10,6 +10,7 @@ capybara-*.html
 *.orig
 rerun.txt
 pickle-email-*.html
+*.gem
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -66,5 +67,5 @@ yarn-debug.log*
 /storage/*
 !/storage/.keep
 
-# Ignore mac os specific files
+# Ignore mac OS specific files
 .DS_Store
