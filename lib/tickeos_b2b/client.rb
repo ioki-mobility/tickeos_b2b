@@ -6,7 +6,9 @@ require 'nori'
 require 'uri'
 
 require_relative 'product_list'
-
+require_relative 'product_data'
+require_relative 'purchase'
+require_relative 'order'
 
 module TickeosB2b
   class Client
@@ -25,6 +27,28 @@ module TickeosB2b
     def product_list
       @request_body = TickeosB2b::ProductList.request_body
       @request_method = TickeosB2b::ProductList.request_method
+
+      call
+    end
+
+    def product_data(ref_id)
+      @request_body = TickeosB2b::ProductData.request_body(ref_id)
+      @request_method = TickeosB2b::ProductData.request_method
+
+      call
+    end
+
+    def purchase(pre_check = 0, go = 1, **options)
+      @options = options
+      @request_body = TickeosB2b::Purchase.request_body(pre_check, go, options)
+      @request_method = TickeosB2b::Purchase.request_method
+
+      call
+    end
+
+    def order(server_ordering_serial, server_order_product_serial)
+      @request_body = TickeosB2b::Order.request_body(server_ordering_serial, server_order_product_serial)
+      @request_method = TickeosB2b::Order.request_method
 
       call
     end
@@ -53,7 +77,7 @@ module TickeosB2b
     def process_request
       if request_method == :get
         process_get_request
-      else
+      elsif request_method == :post
         process_post_request
       end
     end
