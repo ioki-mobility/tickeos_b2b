@@ -43,7 +43,7 @@ module TickeosB2b
                 xml.subProductSelection(
                   reference_id:  options[:sub_ref_id],
                   serial_number: '',
-                  quantity:      ''
+                  quantity:      options[:quantity]
                 ) do
                   xml.validationEndDate(timestamp: '')
                 end
