@@ -39,7 +39,6 @@ module TickeosB2b
     end
 
     def purchase(pre_check = 0, go = 1, **options)
-      @options = options
       @request_body = TickeosB2b::Purchase.request_body(pre_check, go, options)
       @request_method = TickeosB2b::Purchase.request_method
 
