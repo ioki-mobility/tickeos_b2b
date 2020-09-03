@@ -1,8 +1,6 @@
-# Tickeos::B2b
+# TICKeosB2B API
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/tickeos/b2b`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Ruby bindings for the TICKeosB2B API.
 
 ## Installation
 
@@ -14,25 +12,143 @@ gem 'tickeos_b2b'
 
 And then execute:
 
-    $ bundle install
+```ruby
+bundle install
+```
 
 Or install it yourself as:
 
-    $ gem install tickeos-b2b
+```ruby
+gem install tickeos_b2b
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+First create a new instance of the `TickeosB2b::Client` class. The following method parameters are needed for the authentication:
+
+- `url` (e.g. https://shop.tickeos.de/service.php/tickeos_proxy)
+- `username`
+- `password`
+
+**Example:**
+```ruby
+tickeos = TickeosB2b::Client.new(url, username, password)
+```
+
+Then use one of the following methods to interact with the TICKeos B2B API:
+
+- [`product_list`](#`product_list`)
+- [`product_data`](#`product_data`)
+- [`purchase`](`#purchase`)
+- [`order`](`#order`)
+
+### #`product_list`
+
+The `product_list` method returns a list of all available tickets with their **name** and **reference_id**.
+
+No parameters are needed.
+
+**Example:**
+```ruby
+tickeos.product_list
+```
+
+### #`product_data`
+
+The `product_data` method returns more details about a requested ticket.
+
+**Needed parameters:**
+
+- `ref_id` (Ticket reference ID)
+
+**Example:**
+```ruby
+ref_id = 'example-ticket'
+
+tickeos.product_data(ref_id)
+```
+
+### #`purchase`
+
+The `purchase` method is used to purchase a selected product. In case of a successful purchase, the response contains the order number (`server_ordering_serial`) and the serial product number (`server_order_product_serial`) as well as necessary data of the purchased product. In case of an error, the error codes and detailed error messages can be found in the response.
+
+**Needed parameters:**
+
+- `pre_check`
+- `go`
+- `**options`
+
+|Description|`pre_check`|`go`|
+|-|-|-|
+|Validation before an order|1|0|
+|Validation after an order|0|0|
+|Validation and generation of an order|0|1|
+
+```ruby
+options = {
+  :serial_ordering,  # Unique ordering id
+  :first_name,       # First name
+  :last_name,        # Last name
+  :ref_id,           # Ticket reference id
+  :quantity,         # Number of tickets
+  :serial_product,   # Ticket id
+  :date_to_validate, # Validation date
+  :location_id,      # Location id (for communication with HAFAS)
+  :sub_ref_id,       # Subproduct reference id
+  :transaction_id,   # Payment transaction id
+  :payed_amount      # Payed amount
+}
+```
+
+**Example:**
+```ruby
+pre_check = '0' # default
+go        = '1' # default
+
+options = {
+  ref_id:           'Ganztagesticket',
+  first_name:       'Json',
+  last_name:        'Statham',
+  serial_ordering:  'unique_id_123',
+  serial_product:   '123',
+  date_to_validate: Time.now,
+  sub_ref_id:       'AB',
+  transaction_id:   '2L1JHBFT49TC1',
+  quantity:         '1',
+  payed_amount:     '7.66'
+}
+
+tickeos.purchase(pre_check, go, options)
+```
+
+### #`order`
+
+The `order` method retrieves the purchased ticket from the TICKeosB2B API. To retrieve a ticket a `server_ordering_serial` and `server_order_product_serial` parameter is needed. Both parameters are returned after a successful purchase.
+
+**Needed parameters:**
+
+- `server_ordering_serial`      = 
+- `server_order_product_serial` = 
+
+**Example:**
+```ruby
+server_ordering_serial      = '42'
+server_order_product_serial = '0815'
+
+tickeos.order(server_ordering_serial, server_order_product_serial)
+```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+## Testing
+
+After checking out the repo, run `bin/setup` or `bundle` to install all dependencies. Then, run `rake spec` or `rake` to run the tests. To use an interactive prompt that allows some manual testing of the gem, simply run `bin/console` and you're good to go.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/tickeos-b2b.
+Bug reports and pull requests are welcome on GitHub at https://github.com/dbdrive/tickeos_b2b.
 
 
 ## License
