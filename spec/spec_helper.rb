@@ -2,6 +2,11 @@
 
 require 'bundler/setup'
 require 'tickeos_b2b'
+require 'webmock/rspec'
+require 'awesome_print'
+require 'pry'
+
+WebMock.enable!
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

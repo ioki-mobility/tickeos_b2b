@@ -20,7 +20,9 @@ RSpec.describe TickeosB2b::Client do
   end
 
   describe '#product_list' do
-
+    it 'works' do
+      binding.pry
+    end
   end
 
   describe '#product_data' do
