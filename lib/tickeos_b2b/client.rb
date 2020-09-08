@@ -56,10 +56,13 @@ module TickeosB2b
 
     def call
       response = process_request
+      response_status = response.status.to_s
 
-      unless [200].include?(response.status)
-        raise Error::Unauthorized if response.status == 401
-        raise Error::Forbidden if response.status == 403
+      unless response_status.start_with?('2')
+        raise Error::Unauthorized if response_status == '401'
+        raise Error::Forbidden if response_status == '403'
+
+        raise Error::UnexpectedResponseCode, error_message_from_response(response)
       end
 
       Nori.new.parse(response.body)
@@ -93,6 +96,10 @@ module TickeosB2b
         request.headers['Content-Type'] = 'application/xml'
         request.body = request_body
       end
+    end
+
+    def error_message_from_response(response)
+      "#{response.status} >> #{response.body}"
     end
   end
 end

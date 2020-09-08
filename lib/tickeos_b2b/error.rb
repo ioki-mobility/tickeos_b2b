@@ -10,5 +10,8 @@ module TickeosB2b
 
     class Forbidden < TickeosError
     end
+
+    class UnexpectedResponseCode < TickeosError
+    end
   end
 end
