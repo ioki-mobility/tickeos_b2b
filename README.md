@@ -127,8 +127,8 @@ The `order` method retrieves the purchased ticket from the TICKeosB2B API. To re
 
 **Needed parameters:**
 
-- `server_ordering_serial`      = 
-- `server_order_product_serial` = 
+- `server_ordering_serial` (order number on eos.uptrade server)
+- `server_order_product_serial` (product serial number (ticket ID) on eos.uptrade server)
 
 **Example:**
 ```ruby
