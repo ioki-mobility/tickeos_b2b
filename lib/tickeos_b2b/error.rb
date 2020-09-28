@@ -13,5 +13,23 @@ module TickeosB2b
 
     class UnexpectedResponseCode < TickeosError
     end
+
+    class NoProductFound < TickeosError
+      def intialize(msg = 'Please provide a product.')
+        super
+      end
+    end
+
+    class NoPersonalisationDataFound < TickeosError
+      def initialize(msg = 'Please provide personalisation data.')
+        super
+      end
+    end
+
+    class NoTicketFound < TickeosError
+      def initialize(msg = 'Please provide a ticket.')
+        super
+      end
+    end
   end
 end
