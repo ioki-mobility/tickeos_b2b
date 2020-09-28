@@ -5,8 +5,6 @@ require 'nokogiri'
 require 'nori'
 require 'uri'
 
-require_relative 'product'
-require_relative 'order'
 require_relative 'api/product_list'
 require_relative 'api/product_data'
 require_relative 'api/purchase'
