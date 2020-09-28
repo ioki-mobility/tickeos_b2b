@@ -1,23 +1,41 @@
 # frozen_string_literal: true
 
+require 'base64'
+
 module TickeosB2b
   class Order
-    def self.request_body(server_ordering_serial, server_order_product_serial)
-      Nokogiri::XML::Builder.new do |xml|
-        xml.TICKeosProxy(apiVersion: '', version: '', instanceName: '') do
-          xml.txOrderRequest(
-            orderingSerial:     server_ordering_serial,
-            orderProductSerial: server_order_product_serial
-          ) do
-            xml.part('ticket')
-            xml.ticketParameter(app: 'mobile', outputFormat: '')
-          end
-        end
-      end.to_xml
+    ATTRIBUTES = [
+      :ticket_id,
+      :ticket_data,
+      :aztec_content
+    ].freeze
+
+    attr_accessor(*ATTRIBUTES)
+
+    def initialize(**kwargs)
+      ATTRIBUTES.each do |attr|
+        instance_variable_set("@#{attr}", kwargs[attr])
+      end
     end
 
-    def self.request_method
-      :get
+    def attributes
+      ATTRIBUTES.map do |attr|
+        [attr, public_send(attr)]
+      end.to_h
+    end
+
+    def self.from_json(json)
+      json = json['TICKeosProxy']['txOrderResponse']
+
+      new(
+        ticket_id:     json['ticketData']['ticket_id'],
+        ticket_data:   json['ticketData'],
+        aztec_content: decode(json['aztecContent'])
+      )
+    end
+
+    def self.decode(content)
+      Base64.decode64(content)
     end
   end
 end
