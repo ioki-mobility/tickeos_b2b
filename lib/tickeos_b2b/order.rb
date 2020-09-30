@@ -30,12 +30,8 @@ module TickeosB2b
       new(
         ticket_id:     json['ticketData']['ticket_id'],
         ticket_data:   json['ticketData'],
-        aztec_content: decode(json['aztecContent'])
+        aztec_content: json['aztecContent']
       )
-    end
-
-    def self.decode(content)
-      Base64.decode64(content)
     end
   end
 end
