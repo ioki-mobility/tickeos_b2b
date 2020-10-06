@@ -43,8 +43,8 @@ module TickeosB2b
 
     def purchase(product, personalisation_data, ticket = nil, pre_check = 0, go = 1)
       if ticket.nil?
-        raise Error::NoProductFound if product.nil? || product == ''
-        raise Error::NoPersonalisationDataFound if personalisation_data.nil? || personalisation_data == ''
+        raise Error::ProductNotFound if product.nil? || product == ''
+        raise Error::PersonalisationDataNotFound if personalisation_data.nil? || personalisation_data == ''
 
         ticket = product.personalize(personalisation_data)
       end
@@ -56,7 +56,7 @@ module TickeosB2b
     end
 
     def order(ticket)
-      raise Error::NoTicketFound if ticket.nil? || ticket == ''
+      raise Error::TicketNotFound if ticket.nil? || ticket == ''
 
       @request_body = Api::Order.request_body(ticket.server_ordering_serial, ticket.server_order_product_serial)
       @request_method = Api::Order.request_method
