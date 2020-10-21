@@ -17,17 +17,15 @@ RSpec.describe TickeosB2b::Api::Purchase do
           </orderCustomer>
           <optionProduct reference_id="test_ticket" quantity="1" serial_number="42">
             <validationDate timestamp="2020-09-02"/>
-            <location id="" name=""/>
+            <location id="Master:8123456"/>
             <validationEndDate timestamp=""/>
-            <zone value=""/>
-            <zone value=""/>
             <personalisation role="first_name" type="plain">
               <value>Json</value>
             </personalisation>
             <personalisation role="last_name" type="plain">
               <value>Statham</value>
             </personalisation>
-            <subProductSelections productTypeRole="subproduct">
+            <subProductSelections productTypeRole="abo_zones">
               <subProductSelection reference_id="kein Zuschlag" serial_number="" quantity="1">
                 <validationEndDate timestamp=""/>
               </subProductSelection>
@@ -62,7 +60,9 @@ RSpec.describe TickeosB2b::Api::Purchase do
       sub_ref_id:           'kein Zuschlag',
       validation_date:      Date.new(2020, 9, 2),
       first_name:           'Json',
-      last_name:            'Statham'
+      last_name:            'Statham',
+      location_id:          'Master:8123456',
+      product_type_role:    'abo_zones'
     )
   end
 

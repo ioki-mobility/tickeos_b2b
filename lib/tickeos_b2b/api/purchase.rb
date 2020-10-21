@@ -30,17 +30,15 @@ module TickeosB2b
                 serial_number: ticket.product.id
               ) do
                 xml.validationDate(timestamp: validation_date(ticket.validation_date))
-                xml.location(id: '', name: '')
+                xml.location(id: ticket.location_id)
                 xml.validationEndDate(timestamp: '')
-                xml.zone(value: '')
-                xml.zone(value: '')
                 xml.personalisation(role: 'first_name', type: 'plain') do
                   xml.value(ticket.first_name)
                 end
                 xml.personalisation(role: 'last_name', type: 'plain') do
                   xml.value(ticket.last_name)
                 end
-                xml.subProductSelections(productTypeRole: 'subproduct') do
+                xml.subProductSelections(productTypeRole: ticket.product_type_role) do
                   xml.subProductSelection(
                     reference_id:  ticket.sub_ref_id,
                     serial_number: '',
