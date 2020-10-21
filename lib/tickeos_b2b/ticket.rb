@@ -13,6 +13,8 @@ module TickeosB2b
       :validation_date,
       :first_name,
       :last_name,
+      :location_id,
+      :product_type_role,
       :server_ordering_serial,
       :server_order_product_serial,
       :price_net,

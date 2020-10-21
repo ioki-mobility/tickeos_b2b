@@ -51,10 +51,12 @@ RSpec.describe TickeosB2b::Ticket do
   let(:ticket) { described_class.new(personalisation_data) }
   let(:personalisation_data) do
     {
-      first_name:      'Json',
-      last_name:       'Statham',
-      validation_date: Time.now,
-      sub_ref_id:      'kein Zuschlag'
+      first_name:        'Json',
+      last_name:         'Statham',
+      validation_date:   Time.now,
+      sub_ref_id:        'kein Zuschlag',
+      location_id:       '123456789',
+      product_type_role: 'abo_zones'
     }
   end
 
@@ -77,6 +79,8 @@ RSpec.describe TickeosB2b::Ticket do
         validation_date:             nil,
         first_name:                  nil,
         last_name:                   nil,
+        location_id:                 nil,
+        product_type_role:           nil,
         server_ordering_serial:      nil,
         server_order_product_serial: nil,
         price_net:                   nil,
