@@ -31,9 +31,11 @@ module TickeosB2b
       Product.from_json(call)
     end
 
-    def load!(product)
+    def load!(product, full_product_info = false)
       @request_body = Api::ProductData.request_body(product.reference_id)
       @request_method = Api::ProductData.request_method
+
+      return call if full_product_info
 
       Product.load_product_data(product, call)
     end
