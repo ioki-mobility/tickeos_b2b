@@ -43,13 +43,11 @@ module TickeosB2b
     def validate
     end
 
-    def purchase(product, personalisation_data, ticket = nil, pre_check = 0, go = 1)
-      if ticket.nil?
-        raise Error::ProductNotFound if product.nil? || product == ''
-        raise Error::PersonalisationDataNotFound if personalisation_data.nil? || personalisation_data == ''
+    def purchase(product, personalisation_data, pre_check = 0, go = 1)
+      raise Error::ProductNotFound if product.blank?
+      raise Error::PersonalisationDataNotFound if personalisation_data.blank?
 
-        ticket = product.personalize(personalisation_data)
-      end
+      ticket = product.personalize(personalisation_data)
 
       @request_body = Api::Purchase.request_body(pre_check, go, ticket)
       @request_method = Api::Purchase.request_method

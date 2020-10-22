@@ -40,7 +40,7 @@ module TickeosB2b
     end
 
     def self.load_ticket_data(ticket, json)
-      json = json['TICKeosProxy']['txPurchaseResponse']
+      json = json.dig('TICKeosProxy', 'txPurchaseResponse')
 
       ticket.server_ordering_serial      = nil
       ticket.server_order_product_serial = nil
@@ -53,8 +53,8 @@ module TickeosB2b
         ticket.state                       = :invalid
         ticket.errors                      = {
           error_type:    :standard,
-          error_code:    json['error']['detail']['@error_code'],
-          error_message: json['error']['detail']['@error_message']
+          error_code:    json.dig('error', 'detail', '@error_code'),
+          error_message: json.dig('error', 'detail', '@error_message')
         }
 
         return ticket
@@ -64,23 +64,23 @@ module TickeosB2b
         ticket.state                       = :invalid
         ticket.errors                      = {
           error_type:     :validation_error,
-          error_product:  json['validationError']['productError'],
-          error_payment:  json['validationError']['paymentError'],
-          error_customer: json['validationError']['customerError'],
-          error_code:     json['validationError']['@code'],
-          error_message:  json['validationError']['@message']
+          error_product:  json.dig('validationError', 'productError'),
+          error_payment:  json.dig('validationError', 'paymentError'),
+          error_customer: json.dig('validationError', 'customerError'),
+          error_code:     json.dig('validationError', '@code'),
+          error_message:  json.dig('validationError', '@message')
         }
 
         return ticket
       end
 
       ticket.state                       = :purchased
-      ticket.server_ordering_serial      = json['ordering']['@server_ordering_serial']
-      ticket.server_order_product_serial = json['productData']['@server_order_product_serial']
-      ticket.price_net                   = json['productData']['@price_net'].to_f
-      ticket.price_gross                 = json['productData']['@price_gross'].to_f
-      ticket.price_vat                   = json['productData']['@price_vat'].to_f
-      ticket.price_vat_rate              = json['productData']['@price_vat_rate'].to_f
+      ticket.server_ordering_serial      = json.dig('ordering', '@server_ordering_serial')
+      ticket.server_order_product_serial = json.dig('productData', '@server_order_product_serial')
+      ticket.price_net                   = json.dig('productData', '@price_net').to_f
+      ticket.price_gross                 = json.dig('productData', '@price_gross').to_f
+      ticket.price_vat                   = json.dig('productData', '@price_vat').to_f
+      ticket.price_vat_rate              = json.dig('productData', '@price_vat_rate').to_f
 
       ticket
     end

@@ -47,7 +47,7 @@ module TickeosB2b
 
     class << self
       def from_json(json)
-        json = json['TICKeosProxy']['txProductResponse']['productItem']
+        json = json.dig('TICKeosProxy', 'txProductResponse', 'productItem')
 
         json.map do |product|
           new(
