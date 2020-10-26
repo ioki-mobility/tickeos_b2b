@@ -11,31 +11,42 @@ RSpec.describe TickeosB2b::Client do
     )
   end
 
-  let(:username) { 'foobar' }
+  let(:username) { nil }
   let(:password) { 'password123' }
   let(:tickeos_url) { 'https://shop.tickeos.de/service.php/tickeos_proxy' }
 
   describe '#new' do
     it 'initializes the object correctly' do
-      expect(subject).to be_truthy
+      expect(client).to be_truthy
     end
 
     it "creates an object of type #{described_class}" do
-      expect(subject).to be_an_instance_of(described_class)
+      expect(client).to be_an_instance_of(TickeosB2b::Client)
     end
   end
 
   describe 'endpoint methods' do
-    before do
-      stub_request(:get, tickeos_url).
-        with(body:    request_body,
-             headers: {
-               'Content-Type' => 'application/xml'
-             }).
-        to_return(status: 200, body: '')
-    end
-
     describe '#product_list' do
+      let(:product_list_double) do
+        double(
+          described_class,
+          
+        )
+      end
+      let(:product_list) do
+        'gandlkfa'
+      end
+
+      before do
+        stub_request(:get, tickeos_url).
+          with(body:    request_body,
+               headers: {
+                 'Content-Type' => 'application/xml'
+               }).
+          to_return(status: 200, body: product_list)
+      end
+
+
       let(:request_body) do
         Nokogiri::XML::Builder.new do |xml|
           xml.TICKeosProxy(apiVersion: '', version: '', instanceName: '') do
@@ -45,6 +56,8 @@ RSpec.describe TickeosB2b::Client do
       end
 
       it 'is expected to succeed' do
+        ap client.product_list
+        #expect(client.product_list).to eq(product_list)
       end
     end
 
