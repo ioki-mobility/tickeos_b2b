@@ -1,5 +1,7 @@
 # TICKeosB2B API
 
+[![CI for tickeos_b2b](https://github.com/ioki-mobility/tickeos_b2b/workflows/CI%20for%20tickeos_b2b/badge.svg)](https://github.com/ioki-mobility/tickeos_b2b/actions)
+
 Ruby bindings for the TICKeosB2B API.
 
 ## Installation
