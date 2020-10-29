@@ -67,6 +67,7 @@ RSpec.describe TickeosB2b::Order do
     let(:expected_attributes) do
       {
         ticket_id:     nil,
+        state:         nil,
         ticket_data:   nil,
         aztec_content: nil
       }
@@ -81,12 +82,14 @@ RSpec.describe TickeosB2b::Order do
     let(:order) { described_class.from_json(order_json) }
     let(:expected_order_response) { order_json }
     let(:ticket_id) { expected_order_response['TICKeosProxy']['txOrderResponse']['ticketData']['ticket_id'] }
+    let(:state) { :valid }
     let(:ticket_data) { expected_order_response['TICKeosProxy']['txOrderResponse']['ticketData'] }
     let(:aztec_content) { expected_order_response['TICKeosProxy']['txOrderResponse']['aztecContent'] }
 
     it 'extracts the information from order hash correctly' do
       order
       expect(order.ticket_id).to eq(ticket_id)
+      expect(order.state).to eq(state)
       expect(order.ticket_data).to eq(ticket_data)
       expect(order.aztec_content).to eq(aztec_content)
     end

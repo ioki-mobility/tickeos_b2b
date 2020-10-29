@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require 'base64'
-
 module TickeosB2b
   class Order
     ATTRIBUTES = [
       :ticket_id,
+      :state,
       :ticket_data,
       :aztec_content
     ].freeze
@@ -25,12 +24,13 @@ module TickeosB2b
     end
 
     def self.from_json(json)
-      json = json['TICKeosProxy']['txOrderResponse']
+      json = json.dig('TICKeosProxy', 'txOrderResponse')
 
       new(
-        ticket_id:     json['ticketData']['ticket_id'],
-        ticket_data:   json['ticketData'],
-        aztec_content: json['aztecContent']
+        ticket_id:     json.dig('ticketData', 'ticket_id'),
+        state:         :valid,
+        ticket_data:   json.dig('ticketData'),
+        aztec_content: json.dig('aztecContent')
       )
     end
   end
