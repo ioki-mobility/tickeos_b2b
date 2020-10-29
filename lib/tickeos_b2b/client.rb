@@ -5,6 +5,7 @@ require 'nokogiri'
 require 'nori'
 require 'uri'
 
+require_relative 'api/cancel'
 require_relative 'api/product_list'
 require_relative 'api/product_data'
 require_relative 'api/purchase'
@@ -62,6 +63,16 @@ module TickeosB2b
       @request_method = Api::Order.request_method
 
       Order.from_json(call)
+    end
+
+    def cancel(ticket_id)
+      @request_body = Api::Cancel.request_body(ticket_id)
+      @request_method = Api::Cancel.request_method
+
+      result = call
+      return :error unless result.dig('TICKeosProxy', 'txCancelResponse', 'error').blank?
+
+      :cancelled
     end
 
     private
