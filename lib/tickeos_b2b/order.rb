@@ -5,6 +5,7 @@ module TickeosB2b
     ATTRIBUTES = [
       :ticket_id,
       :state,
+      :rendered_ticket,
       :ticket_data,
       :aztec_content
     ].freeze
@@ -27,10 +28,11 @@ module TickeosB2b
       json = json.dig('TICKeosProxy', 'txOrderResponse')
 
       new(
-        ticket_id:     json.dig('ticketData', 'ticket_id'),
-        state:         :valid,
-        ticket_data:   json.dig('ticketData'),
-        aztec_content: json.dig('aztecContent')
+        ticket_id:       json.dig('ticketData', 'ticket_id'),
+        state:           :valid,
+        rendered_ticket: json.dig('renderedTicket'),
+        ticket_data:     json.dig('ticketData'),
+        aztec_content:   json.dig('aztecContent')
       )
     end
   end

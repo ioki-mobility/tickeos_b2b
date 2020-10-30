@@ -66,10 +66,11 @@ RSpec.describe TickeosB2b::Order do
   describe '.attributes' do
     let(:expected_attributes) do
       {
-        ticket_id:     nil,
-        state:         nil,
-        ticket_data:   nil,
-        aztec_content: nil
+        ticket_id:       nil,
+        state:           nil,
+        rendered_ticket: nil,
+        ticket_data:     nil,
+        aztec_content:   nil
       }
     end
 
@@ -83,6 +84,7 @@ RSpec.describe TickeosB2b::Order do
     let(:expected_order_response) { order_json }
     let(:ticket_id) { expected_order_response['TICKeosProxy']['txOrderResponse']['ticketData']['ticket_id'] }
     let(:state) { :valid }
+    let(:rendered_ticket) { expected_order_response['TICKeosProxy']['txOrderResponse']['renderedTicket'] }
     let(:ticket_data) { expected_order_response['TICKeosProxy']['txOrderResponse']['ticketData'] }
     let(:aztec_content) { expected_order_response['TICKeosProxy']['txOrderResponse']['aztecContent'] }
 
@@ -90,6 +92,7 @@ RSpec.describe TickeosB2b::Order do
       order
       expect(order.ticket_id).to eq(ticket_id)
       expect(order.state).to eq(state)
+      expect(order.rendered_ticket).to eq(rendered_ticket)
       expect(order.ticket_data).to eq(ticket_data)
       expect(order.aztec_content).to eq(aztec_content)
     end
