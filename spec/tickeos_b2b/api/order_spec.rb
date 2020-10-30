@@ -11,7 +11,7 @@ RSpec.describe TickeosB2b::Api::Order do
       <TICKeosProxy apiVersion=\"\" version=\"\" instanceName=\"\">
         <txOrderRequest orderingSerial=\"42\" orderProductSerial=\"0815\">
           <part>ticket</part>
-          <ticketParameter app=\"mobile\" outputFormat=\"\"/>
+          <ticketParameter app=\"mobile\" outputFormat=\"png\"/>
         </txOrderRequest>
       </TICKeosProxy>
     XML
