@@ -13,6 +13,9 @@ pickle-email-*.html
 *.gem
 .rspec_status
 
+# Ignore all image files
+*.png
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
