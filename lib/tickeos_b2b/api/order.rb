@@ -11,7 +11,7 @@ module TickeosB2b
               orderProductSerial: server_order_product_serial
             ) do
               xml.part('ticket')
-              xml.ticketParameter(app: 'mobile', outputFormat: '')
+              xml.ticketParameter(app: 'mobile', outputFormat: 'png')
             end
           end
         end.to_xml
