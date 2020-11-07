@@ -68,7 +68,7 @@ module TickeosB2b
       end
 
       def load_product_data(product, json)
-        json = json['TICKeosProxy']['txProductDataResponse']['Product']
+        json = json.dig('TICKeosProxy', 'txProductDataResponse', 'Product')
 
         product.id                         = json['@id']
         product.vu_name                    = json['@vu_name']

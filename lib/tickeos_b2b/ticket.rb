@@ -40,7 +40,7 @@ module TickeosB2b
     end
 
     def self.load_ticket_data(ticket, json)
-      json = json.dig('TICKeosProxy', 'txPurchaseResponse')
+      json = json.dig('TICKeosProxy', 'txPurchaseResponse') || json.dig('TICKeosProxy', 'txResponse')
 
       ticket.server_ordering_serial      = nil
       ticket.server_order_product_serial = nil
@@ -53,8 +53,8 @@ module TickeosB2b
         ticket.state                       = :invalid
         ticket.errors                      = {
           error_type:    :standard,
-          error_code:    json.dig('error', 'detail', '@error_code'),
-          error_message: json.dig('error', 'detail', '@error_message')
+          error_code:    json.dig('error', 'detail', '@error_code') || json.dig('error', '@code'),
+          error_message: json.dig('error', 'detail', '@error_message') || json.dig('error', '@message')
         }
 
         return ticket
