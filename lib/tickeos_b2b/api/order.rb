@@ -3,7 +3,7 @@
 module TickeosB2b
   module Api
     class Order
-      def self.request_body(server_ordering_serial, server_order_product_serial)
+      def self.request_body(server_ordering_serial:, server_order_product_serial:)
         Nokogiri::XML::Builder.new do |xml|
           xml.TICKeosProxy(apiVersion: '', version: '', instanceName: '') do
             xml.txOrderRequest(

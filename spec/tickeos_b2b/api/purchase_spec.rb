@@ -37,7 +37,13 @@ RSpec.describe TickeosB2b::Api::Purchase do
     XML
   end
 
-  let(:operation) { purchase.request_body(pre_check, go, ticket) }
+  let(:operation) do
+    purchase.request_body(
+      pre_check: pre_check,
+      go:        go,
+      ticket:    ticket
+    )
+  end
   let(:pre_check) { '0' }
   let(:go) { '1' }
 

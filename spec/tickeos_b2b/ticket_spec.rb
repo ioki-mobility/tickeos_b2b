@@ -96,7 +96,12 @@ RSpec.describe TickeosB2b::Ticket do
   end
 
   describe '.load_ticket_data' do
-    let(:purchased_ticket) { described_class.load_ticket_data(ticket, purchased_ticket_data) }
+    let(:purchased_ticket) do
+      described_class.load_ticket_data(
+        ticket:   ticket,
+        response: purchased_ticket_data
+      )
+    end
 
     context 'when there are standard errors' do
       let(:purchased_ticket_data) { errors_json }

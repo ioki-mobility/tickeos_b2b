@@ -68,7 +68,11 @@ RSpec.describe TickeosB2b::Product do
     )
   end
 
-  let(:product_list) { described_class.from_json(product_list_json) }
+  let(:product_list) do
+    described_class.from_json(
+      response: product_list_json
+    )
+  end
 
   describe '.new' do
     it 'creates a new Product object' do
@@ -142,7 +146,10 @@ RSpec.describe TickeosB2b::Product do
   describe '.load_product_data' do
     it 'updates the Product data correctly' do
       product = product_list.first
-      product = described_class.load_product_data(product, product_data_json)
+      product = described_class.load_product_data(
+        product:  product,
+        response: product_data_json
+      )
       expect(product.id).to eq('113')
       expect(product.vu_name).to eq('name vu')
       expect(product.vu_role).to eq('role')
