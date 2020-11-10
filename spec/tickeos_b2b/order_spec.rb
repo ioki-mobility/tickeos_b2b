@@ -80,7 +80,7 @@ RSpec.describe TickeosB2b::Order do
   end
 
   describe '.from_json' do
-    let(:order) { described_class.from_json(order_json) }
+    let(:order) { described_class.from_json(response: order_json) }
     let(:expected_order_response) { order_json }
     let(:ticket_id) { expected_order_response['TICKeosProxy']['txOrderResponse']['ticketData']['ticket_id'] }
     let(:state) { :valid }

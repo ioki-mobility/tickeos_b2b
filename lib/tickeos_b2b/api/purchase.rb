@@ -3,7 +3,7 @@
 module TickeosB2b
   module Api
     class Purchase
-      def self.request_body(pre_check, go, ticket)
+      def self.request_body(pre_check:, go:, ticket:)
         Nokogiri::XML::Builder.new do |xml|
           xml.TICKeosProxy(apiVersion: '', version: '', instanceName: '') do
             xml.txPurchaseRequest(preCheck: pre_check, go: go) do

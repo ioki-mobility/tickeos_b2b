@@ -3,7 +3,7 @@
 module TickeosB2b
   module Api
     class Cancel
-      def self.request_body(server_order_product_serial, go = 1)
+      def self.request_body(server_order_product_serial:, go: '1')
         Nokogiri::XML::Builder.new do |xml|
           xml.TICKeosProxy(apiVersion: '', version: '', instanceName: '') do
             xml.txCancelRequest(

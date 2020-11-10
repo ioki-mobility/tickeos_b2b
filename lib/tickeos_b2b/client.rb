@@ -19,7 +19,7 @@ module TickeosB2b
                 :request_body,
                 :request_method
 
-    def initialize(url, username, password)
+    def initialize(url:, username:, password:)
       @url = URI(url)
       @username = username
       @password = password
@@ -29,44 +29,54 @@ module TickeosB2b
       @request_body = Api::ProductList.request_body
       @request_method = Api::ProductList.request_method
 
-      Product.from_json(call)
+      Product.from_json(response: call)
     end
 
-    def load!(product, full_product_info = false)
-      @request_body = Api::ProductData.request_body(product.reference_id)
+    def load!(product:, full_product_info: false)
+      @request_body = Api::ProductData.request_body(reference_id: product.reference_id)
       @request_method = Api::ProductData.request_method
 
       return call if full_product_info
 
-      Product.load_product_data(product, call)
+      Product.load_product_data(
+        product:  product,
+        response: call
+      )
     end
 
     def validate
     end
 
-    def purchase(product, personalisation_data, pre_check = 0, go = 1)
+    def purchase(product:, personalisation_data:, dry_run: false)
       raise Error::ProductNotFound if product.blank?
       raise Error::PersonalisationDataNotFound if personalisation_data.blank?
 
       ticket = product.personalize(personalisation_data)
+      pre_check = pre_check_settings(dry_run)[:pre_check]
+      go = pre_check_settings(dry_run)[:go]
 
-      @request_body = Api::Purchase.request_body(pre_check, go, ticket)
+      @request_body = Api::Purchase.request_body(pre_check: pre_check, go: go, ticket: ticket)
       @request_method = Api::Purchase.request_method
 
-      Ticket.load_ticket_data(ticket, call)
+      Ticket.load_ticket_data(ticket: ticket, response: call)
     end
 
-    def order(ticket)
+    def order(ticket:)
       raise Error::TicketNotFound if ticket.blank?
 
-      @request_body = Api::Order.request_body(ticket.server_ordering_serial, ticket.server_order_product_serial)
+      @request_body = Api::Order.request_body(
+        server_ordering_serial:      ticket.server_ordering_serial,
+        server_order_product_serial: ticket.server_order_product_serial
+      )
       @request_method = Api::Order.request_method
 
-      Order.from_json(call)
+      Order.from_json(response: call)
     end
 
-    def cancel(ticket_id)
-      @request_body = Api::Cancel.request_body(ticket_id)
+    def cancel(ticket_id:)
+      @request_body = Api::Cancel.request_body(
+        server_order_product_serial: ticket_id
+      )
       @request_method = Api::Cancel.request_method
 
       result = call
@@ -124,6 +134,12 @@ module TickeosB2b
 
     def error_message_from_response(response)
       "#{response.status} >> #{response.body}"
+    end
+
+    def pre_check_settings(dry_run)
+      return { pre_check: '1', go: '0' } if dry_run
+
+      { pre_check: '0', go: '1' }
     end
   end
 end

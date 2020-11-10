@@ -46,10 +46,10 @@ module TickeosB2b
     end
 
     class << self
-      def from_json(json)
-        json = json.dig('TICKeosProxy', 'txProductResponse', 'productItem')
+      def from_json(response:)
+        response = response.dig('TICKeosProxy', 'txProductResponse', 'productItem')
 
-        json.map do |product|
+        response.map do |product|
           new(
             name:         product['@name'],
             reference_id: product['@reference_id'],
@@ -67,19 +67,19 @@ module TickeosB2b
         product == '1'
       end
 
-      def load_product_data(product, json)
-        json = json.dig('TICKeosProxy', 'txProductDataResponse', 'Product')
+      def load_product_data(product:, response:)
+        response = response.dig('TICKeosProxy', 'txProductDataResponse', 'Product')
 
-        product.id                         = json['@id']
-        product.vu_name                    = json['@vu_name']
-        product.vu_role                    = json['@vu_role']
-        product.sort_order                 = json['@sort_order']
-        product.tariff_zone_count          = json['@tariff_zone_count']
-        product.tariff_zone_count_required = json['@tariff_zone_count_required']
-        product.sale_date_from             = to_date(json['@sale_date_from'])
-        product.sale_date_to               = to_date(json['@sale_date_to'])
-        product.distribution_method        = json['@distribution_method']
-        product.visible                    = visible?(json['@visible'])
+        product.id                         = response['@id']
+        product.vu_name                    = response['@vu_name']
+        product.vu_role                    = response['@vu_role']
+        product.sort_order                 = response['@sort_order']
+        product.tariff_zone_count          = response['@tariff_zone_count']
+        product.tariff_zone_count_required = response['@tariff_zone_count_required']
+        product.sale_date_from             = to_date(response['@sale_date_from'])
+        product.sale_date_to               = to_date(response['@sale_date_to'])
+        product.distribution_method        = response['@distribution_method']
+        product.visible                    = visible?(response['@visible'])
 
         product
       end

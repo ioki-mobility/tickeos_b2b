@@ -39,8 +39,8 @@ module TickeosB2b
       end.to_h
     end
 
-    def self.load_ticket_data(ticket, json)
-      json = json.dig('TICKeosProxy', 'txPurchaseResponse') || json.dig('TICKeosProxy', 'txResponse')
+    def self.load_ticket_data(ticket:, response:)
+      response = response.dig('TICKeosProxy', 'txPurchaseResponse') || response.dig('TICKeosProxy', 'txResponse')
 
       ticket.server_ordering_serial      = nil
       ticket.server_order_product_serial = nil
@@ -49,38 +49,38 @@ module TickeosB2b
       ticket.price_vat                   = nil
       ticket.price_vat_rate              = nil
 
-      unless json['error'].blank?
+      unless response['error'].blank?
         ticket.state                       = :invalid
         ticket.errors                      = {
           error_type:    :standard,
-          error_code:    json.dig('error', 'detail', '@error_code') || json.dig('error', '@code'),
-          error_message: json.dig('error', 'detail', '@error_message') || json.dig('error', '@message')
+          error_code:    response.dig('error', 'detail', '@error_code') || response.dig('error', '@code'),
+          error_message: response.dig('error', 'detail', '@error_message') || response.dig('error', '@message')
         }
 
         return ticket
       end
 
-      unless json['validationError'].blank?
+      unless response['validationError'].blank?
         ticket.state                       = :invalid
         ticket.errors                      = {
           error_type:     :validation_error,
-          error_product:  json.dig('validationError', 'productError'),
-          error_payment:  json.dig('validationError', 'paymentError'),
-          error_customer: json.dig('validationError', 'customerError'),
-          error_code:     json.dig('validationError', '@code'),
-          error_message:  json.dig('validationError', '@message')
+          error_product:  response.dig('validationError', 'productError'),
+          error_payment:  response.dig('validationError', 'paymentError'),
+          error_customer: response.dig('validationError', 'customerError'),
+          error_code:     response.dig('validationError', '@code'),
+          error_message:  response.dig('validationError', '@message')
         }
 
         return ticket
       end
 
       ticket.state                       = :purchased
-      ticket.server_ordering_serial      = json.dig('ordering', '@server_ordering_serial')
-      ticket.server_order_product_serial = json.dig('productData', '@server_order_product_serial')
-      ticket.price_net                   = json.dig('productData', '@price_net').to_f
-      ticket.price_gross                 = json.dig('productData', '@price_gross').to_f
-      ticket.price_vat                   = json.dig('productData', '@price_vat').to_f
-      ticket.price_vat_rate              = json.dig('productData', '@price_vat_rate').to_f
+      ticket.server_ordering_serial      = response.dig('ordering', '@server_ordering_serial')
+      ticket.server_order_product_serial = response.dig('productData', '@server_order_product_serial')
+      ticket.price_net                   = response.dig('productData', '@price_net').to_f
+      ticket.price_gross                 = response.dig('productData', '@price_gross').to_f
+      ticket.price_vat                   = response.dig('productData', '@price_vat').to_f
+      ticket.price_vat_rate              = response.dig('productData', '@price_vat_rate').to_f
 
       ticket
     end

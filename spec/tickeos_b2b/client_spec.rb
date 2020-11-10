@@ -3,7 +3,13 @@
 require 'spec_helper'
 
 RSpec.describe TickeosB2b::Client do
-  subject(:client) { described_class.new(tickeos_url, username, password) }
+  subject(:client) do
+    described_class.new(
+      url:      tickeos_url,
+      username: username,
+      password: password
+    )
+  end
 
   let(:username) { 'foobar' }
   let(:password) { 'password123' }

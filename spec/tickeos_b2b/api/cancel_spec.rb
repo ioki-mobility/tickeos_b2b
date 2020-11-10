@@ -14,7 +14,11 @@ RSpec.describe TickeosB2b::Api::Cancel do
     XML
   end
 
-  let(:operation) { cancel.request_body(server_order_product_serial) }
+  let(:operation) do
+    cancel.request_body(
+      server_order_product_serial: server_order_product_serial
+    )
+  end
   let(:server_order_product_serial) { '42' }
 
   describe '#request_body' do

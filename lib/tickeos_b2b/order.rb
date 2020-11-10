@@ -24,15 +24,15 @@ module TickeosB2b
       end.to_h
     end
 
-    def self.from_json(json)
-      json = json.dig('TICKeosProxy', 'txOrderResponse')
+    def self.from_json(response:)
+      response = response.dig('TICKeosProxy', 'txOrderResponse')
 
       new(
-        ticket_id:       json.dig('ticketData', 'ticket_id'),
+        ticket_id:       response.dig('ticketData', 'ticket_id'),
         state:           :valid,
-        rendered_ticket: json.dig('renderedTicket'),
-        ticket_data:     json.dig('ticketData'),
-        aztec_content:   json.dig('aztecContent')
+        rendered_ticket: response.dig('renderedTicket'),
+        ticket_data:     response.dig('ticketData'),
+        aztec_content:   response.dig('aztecContent')
       )
     end
   end

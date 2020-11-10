@@ -14,7 +14,11 @@ RSpec.describe TickeosB2b::Api::ProductData do
     XML
   end
 
-  let(:operation) { product_data.request_body(reference_id) }
+  let(:operation) do
+    product_data.request_body(
+      reference_id: reference_id
+    )
+  end
   let(:reference_id) { 'test_ticket' }
 
   describe '#request_body' do

@@ -17,7 +17,12 @@ RSpec.describe TickeosB2b::Api::Order do
     XML
   end
 
-  let(:operation) { order.request_body(server_ordering_serial, server_order_product_serial) }
+  let(:operation) do
+    order.request_body(
+      server_ordering_serial:      server_ordering_serial,
+      server_order_product_serial: server_order_product_serial
+    )
+  end
   let(:server_ordering_serial) { '42' }
   let(:server_order_product_serial) { '0815' }
 
