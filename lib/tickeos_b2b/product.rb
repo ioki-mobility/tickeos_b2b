@@ -36,7 +36,7 @@ module TickeosB2b
     end
 
     def personalize(personalization_data = {})
-      ticket                      = Ticket.new(personalization_data)
+      ticket                      = Ticket.new(**personalization_data)
       ticket.product              = self
       ticket.product_reference_id = reference_id
       ticket.serial_ordering      = "ord_#{SecureRandom.uuid}"
