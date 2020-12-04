@@ -33,7 +33,6 @@ module TickeosB2b
               sale_date_to:               '',
               distribution_method:        'mobile',
               visible:                    '1'
-
             },
             ST_Child: {
               id:                         '02',
