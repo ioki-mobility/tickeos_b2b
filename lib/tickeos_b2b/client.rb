@@ -10,6 +10,11 @@ require_relative 'api/product_list'
 require_relative 'api/product_data'
 require_relative 'api/purchase'
 require_relative 'api/order'
+require_relative 'test_run/default_api_response'
+require_relative 'test_run/order'
+require_relative 'test_run/product_data'
+require_relative 'test_run/product_list'
+require_relative 'test_run/purchase'
 
 module TickeosB2b
   class Client
@@ -17,34 +22,48 @@ module TickeosB2b
                 :username,
                 :password,
                 :request_body,
-                :request_method
+                :request_method,
+                :test_run,
+                :options
 
-    def initialize(url:, username:, password:)
+    def initialize(url:, username:, password:, test_run: false, options: TestRun::DefaultApiResponse.options)
       @url = URI(url)
       @username = username
       @password = password
+      @test_run = test_run
+      @options = options
     end
 
     def product_list
       @request_body = Api::ProductList.request_body
       @request_method = Api::ProductList.request_method
 
-      Product.from_json(response: call)
+      case test_run
+      when true
+        Product.from_json(response: TestRun::ProductList.product_list(options))
+      when false
+        Product.from_json(response: call)
+      end
     end
 
     def load!(product:, full_product_info: false)
       @request_body = Api::ProductData.request_body(reference_id: product.reference_id)
       @request_method = Api::ProductData.request_method
 
-      return call if full_product_info
+      return call if full_product_info & !test_run
 
-      Product.load_product_data(
-        product:  product,
-        response: call
-      )
-    end
-
-    def validate
+      case test_run
+      when true
+        Product.load_product_data(
+          product:  product,
+          response: TestRun::ProductData.load!(options, product.reference_id)
+        )
+      when false
+        Product.load_product_data(
+          product:  product,
+          response: call
+        )
+      end
     end
 
     def purchase(product:, personalisation_data:, dry_run: false)
@@ -58,7 +77,18 @@ module TickeosB2b
       @request_body = Api::Purchase.request_body(pre_check: pre_check, go: go, ticket: ticket)
       @request_method = Api::Purchase.request_method
 
-      Ticket.load_ticket_data(ticket: ticket, response: call)
+      case test_run
+      when true
+        Ticket.load_ticket_data(
+          ticket:   ticket,
+          response: TestRun::Purchase.purchase(options, product.reference_id)
+        )
+      when false
+        Ticket.load_ticket_data(
+          ticket:   ticket,
+          response: call
+        )
+      end
     end
 
     def order(ticket:)
@@ -70,7 +100,12 @@ module TickeosB2b
       )
       @request_method = Api::Order.request_method
 
-      Order.from_json(response: call)
+      case test_run
+      when true
+        Order.from_json(response: TestRun::Order.order(options, ticket.product.reference_id))
+      when false
+        Order.from_json(response: call)
+      end
     end
 
     def cancel(ticket_id:)
@@ -104,8 +139,8 @@ module TickeosB2b
 
     def connection
       Faraday.new(url: url) do |f|
-        f.options[:open_timeout] = 5
-        f.options[:timeout] = 15
+        f.options[:open_timeout] = 10
+        f.options[:timeout] = 30
         f.request :url_encoded
         f.adapter :net_http
         f.basic_auth(username, password)

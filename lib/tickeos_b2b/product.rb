@@ -36,7 +36,7 @@ module TickeosB2b
     end
 
     def personalize(personalization_data = {})
-      symbolized_personalization_data = personalization_data.map { |k, v| [k.to_sym, v] }.to_h
+      symbolized_personalization_data = personalization_data.transform_keys(&:to_sym)
 
       ticket                      = Ticket.new(symbolized_personalization_data)
       ticket.product              = self
@@ -51,22 +51,11 @@ module TickeosB2b
       def from_json(response:)
         response = response.dig('TICKeosProxy', 'txProductResponse', 'productItem')
 
+        return from_product_attributes(response) unless response.is_a?(Array)
+
         response.map do |product|
-          new(
-            name:         product['@name'],
-            reference_id: product['@reference_id'],
-            updated_at:   to_timestamp(product['@updated_at']),
-            published:    published?(product['@published'])
-          )
+          from_product_attributes(product)
         end
-      end
-
-      def to_timestamp(time)
-        Time.at(time.to_i)
-      end
-
-      def published?(product)
-        product == '1'
       end
 
       def load_product_data(product:, response:)
@@ -84,6 +73,25 @@ module TickeosB2b
         product.visible                    = visible?(response['@visible'])
 
         product
+      end
+
+      private
+
+      def from_product_attributes(product)
+        new(
+          name:         product['@name'],
+          reference_id: product['@reference_id'],
+          updated_at:   to_timestamp(product['@updated_at']),
+          published:    published?(product['@published'])
+        )
+      end
+
+      def to_timestamp(time)
+        Time.at(time.to_i)
+      end
+
+      def published?(product)
+        product == '1'
       end
 
       def visible?(input)
