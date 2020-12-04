@@ -139,8 +139,8 @@ module TickeosB2b
 
     def connection
       Faraday.new(url: url) do |f|
-        f.options[:open_timeout] = 5
-        f.options[:timeout] = 15
+        f.options[:open_timeout] = 10
+        f.options[:timeout] = 30
         f.request :url_encoded
         f.adapter :net_http
         f.basic_auth(username, password)
