@@ -92,6 +92,7 @@ module TickeosB2b
                 ticket_id:    '800001',
                 ticket_type:  'Ticket',
                 product_name: 'Single Ticket',
+                valid_from:   '',
                 price:        '5.0',
                 vat_rate:     '7',
                 currency:     'EUR'
@@ -104,6 +105,7 @@ module TickeosB2b
                 ticket_id:    '800002',
                 ticket_type:  'Ticket',
                 product_name: 'Single Ticket',
+                valid_from:   '',
                 price:        '3.5',
                 vat_rate:     '7',
                 currency:     'EUR'
@@ -116,6 +118,7 @@ module TickeosB2b
                 ticket_id:    '800001',
                 ticket_type:  'Ticket',
                 product_name: 'Group Ticket',
+                valid_from:   '',
                 price:        '7.5',
                 vat_rate:     '7',
                 currency:     'EUR'

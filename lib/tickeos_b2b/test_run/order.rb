@@ -16,6 +16,7 @@ module TickeosB2b
                   xml.ticket_id(ticket_data[:ticket_id])
                   xml.ticket_type(ticket_data[:ticket_type])
                   xml.product_name(ticket_data[:product_name])
+                  xml.valid_from(ticket_data[:valid_from])
                   xml.price(ticket_data[:price])
                   xml.vat_rate(ticket_data[:vat_rate])
                   xml.currency(ticket_data[:currency])
