@@ -98,8 +98,8 @@ module TickeosB2b
       )
       @request_method = Api::Cancel.request_method
 
-      result = process_request
-      return :error if result.dig('TICKeosProxy', 'txCancelResponse', 'error').present?
+      response = process_request
+      return :error if response.dig('TICKeosProxy', 'txCancelResponse', 'error').present?
 
       :cancelled
     end
