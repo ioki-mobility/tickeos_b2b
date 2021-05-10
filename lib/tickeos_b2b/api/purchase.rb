@@ -31,9 +31,9 @@ module TickeosB2b
               ) do
                 xml.validationDate(timestamp: validation_date(ticket.validation_date))
                 xml.validationEndDate(timestamp: '')
+                xml.location(id: ticket.location_id)
                 xml.zone(value: ticket.start_zone || '')
                 xml.zone(value: ticket.end_zone || '')
-                xml.location(id: ticket.location_id)
                 xml.personalisation(role: 'first_name', type: 'plain') do
                   xml.value(ticket.first_name)
                 end
