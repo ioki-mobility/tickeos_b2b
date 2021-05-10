@@ -17,8 +17,10 @@ RSpec.describe TickeosB2b::Api::Purchase do
           </orderCustomer>
           <optionProduct reference_id="test_ticket" quantity="1" serial_number="42">
             <validationDate timestamp="2020-09-02T00:00:00+00:00"/>
-            <location id="Master:8123456"/>
             <validationEndDate timestamp=""/>
+            <zone value=""/>
+            <zone value=""/>
+            <location id="Master:8123456"/>
             <personalisation role="first_name" type="plain">
               <value>Json</value>
             </personalisation>

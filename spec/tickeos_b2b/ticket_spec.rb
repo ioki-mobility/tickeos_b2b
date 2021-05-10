@@ -80,6 +80,8 @@ RSpec.describe TickeosB2b::Ticket do
         first_name:                  nil,
         last_name:                   nil,
         location_id:                 nil,
+        start_zone:                  nil,
+        end_zone:                    nil,
         product_type_role:           nil,
         server_ordering_serial:      nil,
         server_order_product_serial: nil,
