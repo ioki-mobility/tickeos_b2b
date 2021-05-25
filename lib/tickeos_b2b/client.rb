@@ -25,7 +25,9 @@ module TickeosB2b
                 :request_method,
                 :response_body,
                 :test_run,
-                :options
+                :options,
+                :last_request,
+                :last_response
 
     def initialize(url:, username:, password:, test_run: false, options: TestRun::DefaultApiResponse.options)
       @url = URI(url)
@@ -110,6 +112,12 @@ module TickeosB2b
       response = send_request
       response_status = response.status.to_s
 
+      @last_response = LastResponse.new(
+        status:  response.status,
+        headers: response.headers,
+        body:    response.body
+      )
+
       unless response_status.start_with?('2')
         raise Error::Unauthorized if response_status == '401'
         raise Error::Forbidden if response_status == '403'
@@ -117,8 +125,7 @@ module TickeosB2b
         raise Error::UnexpectedResponseCode, error_message_from_response(response)
       end
 
-      @response_body = response.body
-      Nori.new.parse(@response_body)
+      Nori.new.parse(response.body)
     end
 
     def connection
@@ -143,6 +150,12 @@ module TickeosB2b
       connection.post do |request|
         request.headers['Content-Type'] = 'application/xml'
         request.body = request_body
+        @last_request = LastRequest.new(
+          headers: request.headers,
+          body:    request.body,
+          options: request.options,
+          method:  request.method
+        )
       end
     end
 
@@ -150,6 +163,12 @@ module TickeosB2b
       connection.get do |request|
         request.headers['Content-Type'] = 'application/xml'
         request.body = request_body
+        @last_request = LastRequest.new(
+          headers: request.headers,
+          body:    request.body,
+          options: request.options,
+          method:  request.method
+        )
       end
     end
 
