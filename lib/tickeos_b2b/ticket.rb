@@ -14,6 +14,8 @@ module TickeosB2b
       :first_name,
       :last_name,
       :location_id,
+      :start_zone,
+      :end_zone,
       :product_type_role,
       :server_ordering_serial,
       :server_order_product_serial,
