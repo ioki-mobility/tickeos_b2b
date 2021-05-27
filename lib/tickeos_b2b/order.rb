@@ -7,7 +7,8 @@ module TickeosB2b
       :state,
       :rendered_ticket,
       :ticket_data,
-      :aztec_content
+      :aztec_content,
+      :ordering
     ].freeze
 
     attr_accessor(*ATTRIBUTES)
@@ -32,7 +33,8 @@ module TickeosB2b
         state:           :valid,
         rendered_ticket: response.dig('renderedTicket'),
         ticket_data:     response.dig('ticketData'),
-        aztec_content:   response.dig('aztecContent')
+        aztec_content:   response.dig('aztecContent'),
+        ordering:        response.dig('ordering')
       )
     end
   end

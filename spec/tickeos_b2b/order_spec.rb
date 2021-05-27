@@ -70,7 +70,8 @@ RSpec.describe TickeosB2b::Order do
         state:           nil,
         rendered_ticket: nil,
         ticket_data:     nil,
-        aztec_content:   nil
+        aztec_content:   nil,
+        ordering:        nil
       }
     end
 
@@ -87,6 +88,7 @@ RSpec.describe TickeosB2b::Order do
     let(:rendered_ticket) { expected_order_response['TICKeosProxy']['txOrderResponse']['renderedTicket'] }
     let(:ticket_data) { expected_order_response['TICKeosProxy']['txOrderResponse']['ticketData'] }
     let(:aztec_content) { expected_order_response['TICKeosProxy']['txOrderResponse']['aztecContent'] }
+    let(:ordering) { expected_order_response['TICKeosProxy']['txOrderResponse']['ordering'] }
 
     it 'extracts the information from order hash correctly' do
       order
@@ -95,6 +97,7 @@ RSpec.describe TickeosB2b::Order do
       expect(order.rendered_ticket).to eq(rendered_ticket)
       expect(order.ticket_data).to eq(ticket_data)
       expect(order.aztec_content).to eq(aztec_content)
+      expect(order.ordering).to eq(ordering)
     end
   end
 end
