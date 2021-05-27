@@ -41,9 +41,10 @@ RSpec.describe TickeosB2b::Api::Purchase do
 
   let(:operation) do
     purchase.request_body(
-      pre_check: pre_check,
-      go:        go,
-      ticket:    ticket
+      pre_check:      pre_check,
+      go:             go,
+      ticket:         ticket,
+      requires_zones: true
     )
   end
   let(:pre_check) { '0' }
