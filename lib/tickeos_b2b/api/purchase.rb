@@ -3,7 +3,7 @@
 module TickeosB2b
   module Api
     class Purchase
-      def self.request_body(pre_check:, go:, ticket:)
+      def self.request_body(pre_check:, go:, ticket:, requires_zones:)
         Nokogiri::XML::Builder.new do |xml|
           xml.TICKeosProxy(apiVersion: '', version: '', instanceName: '') do
             xml.txPurchaseRequest(preCheck: pre_check, go: go) do
@@ -32,8 +32,10 @@ module TickeosB2b
                 xml.validationDate(timestamp: validation_date(ticket.validation_date))
                 xml.validationEndDate(timestamp: '')
                 xml.location(id: ticket.location_id)
-                xml.zone(value: ticket.start_zone || '')
-                xml.zone(value: ticket.end_zone || '')
+                if requires_zones
+                  xml.zone(value: ticket.start_zone || '')
+                  xml.zone(value: ticket.end_zone || '')
+                end
                 xml.personalisation(role: 'first_name', type: 'plain') do
                   xml.value(ticket.first_name)
                 end

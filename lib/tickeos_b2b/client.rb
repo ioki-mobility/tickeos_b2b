@@ -60,7 +60,7 @@ module TickeosB2b
       )
     end
 
-    def purchase(product:, personalisation_data:, dry_run: false)
+    def purchase(product:, personalisation_data:, requires_zones: false, dry_run: false)
       raise Error::ProductNotFound if product.blank?
       raise Error::PersonalisationDataNotFound if personalisation_data.blank?
 
@@ -69,7 +69,12 @@ module TickeosB2b
       pre_check = dry_run ? '1' : '0'
       go = dry_run ? '0' : '1'
 
-      @request_body = Api::Purchase.request_body(pre_check: pre_check, go: go, ticket: ticket)
+      @request_body = Api::Purchase.request_body(
+        pre_check:      pre_check,
+        go:             go,
+        ticket:         ticket,
+        requires_zones: requires_zones
+      )
       @request_method = Api::Purchase.request_method
 
       response = test_run ? TestRun::Purchase.purchase(options, product.reference_id) : process_request
