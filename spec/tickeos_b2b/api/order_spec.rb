@@ -20,7 +20,8 @@ RSpec.describe TickeosB2b::Api::Order do
   let(:operation) do
     order.request_body(
       server_ordering_serial:      server_ordering_serial,
-      server_order_product_serial: server_order_product_serial
+      server_order_product_serial: server_order_product_serial,
+      part:                        'ticket'
     )
   end
   let(:server_ordering_serial) { '42' }

@@ -85,12 +85,13 @@ module TickeosB2b
       )
     end
 
-    def order(ticket:)
+    def order(ticket:, part: 'ticket')
       raise Error::TicketNotFound if ticket.blank?
 
       @request_body = Api::Order.request_body(
         server_ordering_serial:      ticket.server_ordering_serial,
-        server_order_product_serial: ticket.server_order_product_serial
+        server_order_product_serial: ticket.server_order_product_serial,
+        part:                        part
       )
       @request_method = Api::Order.request_method
 
