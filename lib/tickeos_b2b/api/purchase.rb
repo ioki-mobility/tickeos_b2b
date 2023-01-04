@@ -66,7 +66,7 @@ module TickeosB2b
         return '' if datetime.blank?
         return datetime if datetime.is_a?(String)
 
-        datetime.strftime('%FT%T%:z')
+        datetime.to_date.to_s
       end
 
       def self.request_method

@@ -16,7 +16,7 @@ RSpec.describe TickeosB2b::Api::Purchase do
             <identityCard ref_id="p" name="Personalausweis" value="" number=""/>
           </orderCustomer>
           <optionProduct reference_id="test_ticket" quantity="1" serial_number="42">
-            <validationDate timestamp="2020-09-02T00:00:00+00:00"/>
+            <validationDate timestamp="2020-09-02"/>
             <validationEndDate timestamp=""/>
             <location id="Master:8123456"/>
             <zone value=""/>
