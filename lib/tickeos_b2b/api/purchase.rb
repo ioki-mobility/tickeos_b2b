@@ -64,7 +64,6 @@ module TickeosB2b
 
       def self.validation_date(datetime)
         return '' if datetime.blank?
-        return datetime if datetime.is_a?(String)
 
         datetime.to_date.to_s
       end
