@@ -29,7 +29,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (4.0.6)
-    rake (12.3.3)
+    rake (13.0.6)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
@@ -55,7 +55,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   pry
-  rake (~> 12.0)
+  rake (~> 13.0)
   rspec (~> 3.0)
   tickeos_b2b!
   webmock
