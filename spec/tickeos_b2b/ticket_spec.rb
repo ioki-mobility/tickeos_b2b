@@ -48,7 +48,7 @@ RSpec.describe TickeosB2b::Ticket do
     )
   end
 
-  let(:ticket) { described_class.new(personalisation_data) }
+  let(:ticket) { described_class.new(**personalisation_data) }
   let(:personalisation_data) do
     {
       first_name:        'Json',
