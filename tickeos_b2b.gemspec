@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = 'tobias.matz@ioki.com'
   gem.homepage      = 'https://github.com/dbdrive/tickeos_b2b'
   gem.license       = 'MIT'
-  gem.required_ruby_version = '>= 2.6'
+  gem.required_ruby_version = '>= 3.0'
 
   gem.files = Dir['lib/**/*']
   gem.require_paths = %w[lib]

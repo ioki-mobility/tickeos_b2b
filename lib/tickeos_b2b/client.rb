@@ -140,7 +140,7 @@ module TickeosB2b
         f.options[:timeout] = 45
         f.request :url_encoded
         f.adapter :net_http
-        f.basic_auth(username, password)
+        f.request :authorization, :basic, username, password
       end
     end
 
@@ -160,7 +160,7 @@ module TickeosB2b
           headers: request.headers,
           body:    request.body,
           options: request.options,
-          method:  request.method
+          method:  request_method
         )
       end
     end
@@ -173,7 +173,7 @@ module TickeosB2b
           headers: request.headers,
           body:    request.body,
           options: request.options,
-          method:  request.method
+          method:  request_method
         )
       end
     end
