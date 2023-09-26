@@ -19,6 +19,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'faraday'
   gem.add_dependency 'nokogiri'
   gem.add_dependency 'nori'
+  gem.add_dependency 'activesupport'
 
   gem.metadata = {
     'homepage_uri'    => 'https://github.com/dbdrive/tickeos_b2b',
