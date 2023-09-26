@@ -3,6 +3,7 @@
 require 'bundler/setup'
 require 'tickeos_b2b'
 require 'webmock/rspec'
+require 'active_support/core_ext/time'
 require 'awesome_print'
 require 'pry'
 

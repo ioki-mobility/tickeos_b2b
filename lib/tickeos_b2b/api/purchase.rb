@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/time'
+
 module TickeosB2b
   module Api
     class Purchase
@@ -64,6 +66,8 @@ module TickeosB2b
 
       def self.validation_date(datetime)
         return '' if datetime.blank?
+
+        raise ArgumentError, 'no proper Time with timezone given' if !datetime.kind_of?(Time) || datetime.utc?
 
         datetime.to_date.to_s
       end

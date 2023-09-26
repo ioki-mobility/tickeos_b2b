@@ -67,7 +67,7 @@ RSpec.describe TickeosB2b::Api::Purchase do
       serial_ordering:      'ord_123',
       transaction_id:       '123ABC',
       sub_ref_id:           'kein Zuschlag',
-      validation_date:      Date.new(2020, 9, 2),
+      validation_date:,
       first_name:           'Json',
       last_name:            'Statham',
       location_id:          'Master:8123456',
@@ -75,9 +75,61 @@ RSpec.describe TickeosB2b::Api::Purchase do
     )
   end
 
+  let(:validation_date) { ActiveSupport::TimeZone['Europe/Berlin'].local(2020, 9, 2, 12, 0, 0) }
+
   describe '#request_body' do
     it 'returns the correct xml request body' do
       expect(operation).to eq(request_body)
+    end
+
+    describe '#validation_date' do
+      context 'when ticket.validation_date is nil' do
+        let(:validation_date) { nil }
+
+        it 'does not raise an error' do
+          expect { operation }.not_to raise_error
+        end
+      end
+
+      context 'when ticket.validation_date is a Date' do
+        let(:validation_date) { Date.new(2020, 9, 2) }
+
+        it 'raises an error' do
+          expect { operation }.to raise_error ArgumentError, 'no proper Time with timezone given'
+        end
+      end
+
+      context 'when ticket.validation_date is a DateTime without timezone info' do
+        let(:validation_date) { DateTime.new(2020, 9, 2, 23) }
+
+        it 'raises an error' do
+          expect { operation }.to raise_error ArgumentError, 'no proper Time with timezone given'
+        end
+      end
+
+      context 'when ticket.validation_date is a DateTime with timezone info' do
+        let(:validation_date) { ActiveSupport::TimeZone['Europe/Berlin'].local(2020, 9, 2, 23, 0, 0) }
+
+        it 'does not raise an error' do
+          expect { operation }.not_to raise_error
+        end
+
+        context 'when local time is at very start of day' do
+          let(:validation_date) { ActiveSupport::TimeZone['Europe/Berlin'].local(2020, 9, 1, 0, 0, 0) }
+
+          it 'considers the correct date of the given timezone' do
+            expect(operation).to include '2020-09-01'
+          end
+        end
+
+        context 'when local time is at very end of day' do
+          let(:validation_date) { ActiveSupport::TimeZone['Europe/Berlin'].local(2020, 9, 1, 23, 59, 59) }
+
+          it 'considers the correct date of the given timezone' do
+            expect(operation).to include '2020-09-01'
+          end
+        end
+      end
     end
   end
 
