@@ -13,6 +13,8 @@ RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
 
+  Time.zone = 'Monrovia' # Monrovia has the same offset as UTC, but is not considered to be an UTC time by ActiveSupport
+
   # Disable RSpec exposing methods globally on `Module` and `main`
   config.disable_monkey_patching!
 
