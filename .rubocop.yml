@@ -1,0 +1,11 @@
+AllCops:
+  TargetRubyVersion: 2.7
+
+inherit_from:
+  - https://dbdrive.github.io/triebwerk/rubocop_common.yml
+
+Style/OpenStructUse:
+  Enabled: no
+
+RSpec/NestedGroups:
+  Max: 4
