@@ -94,16 +94,16 @@ RSpec.describe TickeosB2b::Api::Purchase do
       context 'when ticket.validation_date is a Date' do
         let(:validation_date) { Date.new(2020, 9, 2) }
 
-        it 'raises an error' do
-          expect { operation }.to raise_error ArgumentError, 'no proper Time with timezone given'
+        it 'does not raise an error' do
+          expect { operation }.not_to raise_error
         end
       end
 
       context 'when ticket.validation_date is a DateTime without timezone info' do
-        let(:validation_date) { DateTime.new(2020, 9, 2, 23) }
+        let(:validation_date) { DateTime.new(2020, 9, 2, 23).utc }
 
         it 'raises an error' do
-          expect { operation }.to raise_error ArgumentError, 'no proper Time with timezone given'
+          expect { operation }.to raise_error ArgumentError, 'Time without CET/CEST timezone is not supported'
         end
       end
 

@@ -53,7 +53,7 @@ RSpec.describe TickeosB2b::Ticket do
     {
       first_name:        'Json',
       last_name:         'Statham',
-      validation_date:   Time.now,
+      validation_date:   ActiveSupport::TimeZone['Berlin'].now,
       sub_ref_id:        'kein Zuschlag',
       location_id:       '123456789',
       product_type_role: 'abo_zones'
@@ -63,6 +63,12 @@ RSpec.describe TickeosB2b::Ticket do
   describe '.new' do
     it 'creates a new Ticket object' do
       expect(described_class.new).to be_an_instance_of(TickeosB2b::Ticket)
+    end
+
+    it 'calls custom-setter for :validation_date' do
+      validation_date = ActiveSupport::TimeZone['Berlin'].now
+      expect_any_instance_of(described_class).to receive(:validation_date=).with(validation_date).and_call_original
+      described_class.new(validation_date:)
     end
   end
 
@@ -94,6 +100,98 @@ RSpec.describe TickeosB2b::Ticket do
 
     it 'returns the Ticket attributes correctly' do
       expect(described_class.new.attributes).to eq(expected_attributes)
+    end
+  end
+
+  describe '#validation_date=' do
+    let(:value) { nil }
+    let(:instance) { described_class.new }
+    let(:operation) { instance.validation_date = value }
+
+    context 'when nil is given' do
+      let(:value) { nil }
+
+      it 'changes the validation_date to given value' do
+        instance.instance_variable_set(:@validation_date, :any_date)
+        expect { operation }.to change(instance, :validation_date).to(nil)
+      end
+    end
+
+    context 'when empty string is given' do
+      let(:value) { '' }
+
+      it 'changes the validation_date to nil' do
+        instance.instance_variable_set(:@validation_date, :any_date)
+        expect { operation }.to change(instance, :validation_date).to(nil)
+      end
+    end
+
+    context 'when Date is given' do
+      let(:value) { Date.current }
+
+      it 'changes the validation_date to given value' do
+        expect { operation }.to change(instance, :validation_date).to(value)
+      end
+    end
+
+    context 'when date-string is given' do
+      let(:value) { Date.current.to_s }
+
+      it 'changes the validation_date to a Date object' do
+        expect { operation }.to change(instance, :validation_date).to(kind_of(Date))
+      end
+    end
+
+    context 'when Time is given' do
+      context 'when Time has CET timezone defined' do
+        let(:value) { ActiveSupport::TimeZone['Berlin'].local(2020, 11, 1, 23, 59, 59) }
+
+        it 'changes the validation_date to given value' do
+          expect { operation }.to change(instance, :validation_date).to(value)
+        end
+      end
+
+      context 'when Time has CEST timezone defined' do
+        let(:value) { ActiveSupport::TimeZone['Berlin'].local(2020, 8, 1, 23, 59, 59) }
+
+        it 'changes the validation_date to given value' do
+          expect { operation }.to change(instance, :validation_date).to(value)
+        end
+      end
+
+      context 'when Time has no timezone / is UTC' do
+        let(:value) { ActiveSupport::TimeZone['UTC'].local(2020, 9, 1, 23, 59, 59) }
+
+        it 'raises an ArgumentError' do
+          expect { operation }.to raise_error(ArgumentError).with_message('Time without CET/CEST timezone is not supported')
+        end
+      end
+
+      context 'when Time has any other timezone defined' do
+        let(:value) { ActiveSupport::TimeZone['Hawaii'].local(2020, 9, 1, 23, 59, 59) }
+
+        it 'raises an ArgumentError' do
+          expect { operation }.to raise_error(ArgumentError).with_message('Time without CET/CEST timezone is not supported')
+        end
+      end
+    end
+
+    context 'when time-string is given' do
+      context 'when time-string has a timezone defined' do
+        let(:value) { ActiveSupport::TimeZone['Berlin'].local(2020, 9, 1, 23, 59, 59).to_s }
+
+        it 'changes the validation_date to a Date object' do
+          expect { operation }.to change(instance, :validation_date).to(kind_of(Time))
+        end
+      end
+
+      context 'when time-string has  timezone / is UTC' do
+        let(:value) { Time.now.utc.to_s }
+
+        it 'raises an ArgumentError' do
+          expect { operation }.to raise_error(ArgumentError).with_message('Time without CET/CEST timezone is not supported')
+        end
+      end
     end
   end
 

@@ -110,7 +110,7 @@ RSpec.describe TickeosB2b::Product do
       {
         first_name:      'Json',
         last_name:       'Statham',
-        validation_date: Time.now,
+        validation_date: ActiveSupport::TimeZone['Europe/Berlin'].local(2020, 9, 2, 23, 0, 0),
         sub_ref_id:      'kein Zuschlag'
       }
     end
