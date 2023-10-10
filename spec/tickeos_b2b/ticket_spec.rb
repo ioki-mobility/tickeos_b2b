@@ -185,8 +185,16 @@ RSpec.describe TickeosB2b::Ticket do
         end
       end
 
-      context 'when time-string has  timezone / is UTC' do
+      context 'when time-string is in UTC' do
         let(:value) { Time.now.utc.to_s }
+
+        it 'raises an ArgumentError' do
+          expect { operation }.to raise_error(ArgumentError).with_message('Time without CET/CEST timezone is not supported')
+        end
+      end
+
+      context 'when time-string has some other offset than the local time' do
+        let(:value) { ActiveSupport::TimeZone['Hawaii'].local(2020, 9, 1, 23, 59, 59).to_s }
 
         it 'raises an ArgumentError' do
           expect { operation }.to raise_error(ArgumentError).with_message('Time without CET/CEST timezone is not supported')

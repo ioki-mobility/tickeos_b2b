@@ -55,17 +55,23 @@ module TickeosB2b
                 nil
               elsif DATE_REGEX.match(value.to_s)
                 Date.parse(value.to_s)
+              elsif value.is_a?(Time)
+                assert_timezone!(value)
               else
                 time = Time.parse(value.to_s)
-                unless VALID_TIME_ZONES.include?(time.zone)
-                  raise ArgumentError,
-                        'Time without CET/CEST timezone is not supported'
-                end
-
-                time
+                assert_timezone!(time)
               end
 
       @validation_date = value
+    end
+
+    def assert_timezone!(time)
+      valid_timezone = VALID_TIME_ZONES.include?(time.zone) ||
+                       time.in_time_zone(ActiveSupport::TimeZone['Berlin']).utc_offset == time.utc_offset
+
+      raise ArgumentError, 'Time without CET/CEST timezone is not supported' unless valid_timezone
+
+      time
     end
 
     def self.load_ticket_data(ticket:, response:)
