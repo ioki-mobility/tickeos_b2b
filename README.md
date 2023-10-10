@@ -94,7 +94,7 @@ options = {
   :ref_id,           # Ticket reference id
   :quantity,         # Number of tickets
   :serial_product,   # Ticket id
-  :date_to_validate, # Validation date
+  :date_to_validate, # Validation date (time can also be passed, but it must have a CET/CEST timezone attached to it)
   :location_id,      # Location id (for communication with HAFAS)
   :sub_ref_id,       # Subproduct reference id
   :transaction_id,   # Payment transaction id
@@ -113,7 +113,7 @@ options = {
   last_name:        'Statham',
   serial_ordering:  'unique_id_123',
   serial_product:   '123',
-  date_to_validate: Time.now,
+  date_to_validate: ActiveSupport::TimeZone['Berlin'].now,
   sub_ref_id:       'AB',
   transaction_id:   '2L1JHBFT49TC1',
   quantity:         '1',

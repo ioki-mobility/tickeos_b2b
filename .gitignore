@@ -74,3 +74,6 @@ yarn-debug.log*
 
 # Ignore mac OS specific files
 .DS_Store
+
+# Cached common rubocop config
+.rubocop-https---dbdrive-github-io-triebwerk-rubocop-common-yml

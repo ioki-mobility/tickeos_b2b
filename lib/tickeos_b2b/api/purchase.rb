@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/time'
+
 module TickeosB2b
   module Api
     class Purchase
@@ -64,6 +66,11 @@ module TickeosB2b
 
       def self.validation_date(datetime)
         return '' if datetime.blank?
+
+        # As Ticket#validation_date= already performs validation-checks, this is just a redundant check if
+        # validation_date will be passed by some other unexpected way. After a couple of weeks we can remove this check
+        # again, if no errors occur.
+        raise ArgumentError, 'no proper Time with timezone given' if datetime.is_a?(Time) && datetime.utc?
 
         datetime.to_date.to_s
       end

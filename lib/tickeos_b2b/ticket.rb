@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/time'
+
 module TickeosB2b
   class Ticket
     ATTRIBUTES = [
@@ -25,11 +27,14 @@ module TickeosB2b
       :price_vat_rate
     ].freeze
 
+    DATE_REGEX = /\A\d{4}-\d{2}-\d{2}\Z/
+    VALID_TIME_ZONES = %w[CET CEST].freeze
+
     attr_accessor(*ATTRIBUTES)
 
     def initialize(**kwargs)
       ATTRIBUTES.each do |attr|
-        instance_variable_set("@#{attr}", kwargs[attr])
+        public_send("#{attr}=", kwargs[attr])
       end
 
       self.state = :new
@@ -39,6 +44,34 @@ module TickeosB2b
       ATTRIBUTES.map do |attr|
         [attr, public_send(attr)]
       end.to_h
+    end
+
+    # a validation date will always be transformed to a valid Date or Time object whenever possible.
+    # Time object must also have a timezone included to prevent misinterpretations for the according validation_date.
+    # E.g.: During german summertime someone buys a ticket at/for 1:00am. In UTC resspecting the timezone offset the date
+    #       of the previous day would be applied, causing for the ticket not to be offered.
+    def validation_date=(value)
+      value = if value.blank?
+                nil
+              elsif DATE_REGEX.match(value.to_s)
+                Date.parse(value.to_s)
+              elsif value.is_a?(Time)
+                assert_timezone!(value)
+              else
+                time = Time.parse(value.to_s)
+                assert_timezone!(time)
+              end
+
+      @validation_date = value
+    end
+
+    def assert_timezone!(time)
+      valid_timezone = VALID_TIME_ZONES.include?(time.zone) ||
+                       time.in_time_zone(ActiveSupport::TimeZone['Berlin']).utc_offset == time.utc_offset
+
+      raise ArgumentError, 'Time without CET/CEST timezone is not supported' unless valid_timezone
+
+      time
     end
 
     def self.load_ticket_data(ticket:, response:)

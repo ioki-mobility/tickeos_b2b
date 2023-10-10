@@ -3,6 +3,7 @@
 require 'bundler/setup'
 require 'tickeos_b2b'
 require 'awesome_print'
+require 'active_support/core_ext/time'
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
@@ -18,7 +19,7 @@ def reload!(print = true)
   # Main project directory.
   root_dir = File.expand_path('..', __dir__)
   # Directories within the project that should be reloaded.
-  reload_dirs = %w{lib}
+  reload_dirs = %w[lib]
   # Loop through and reload every file in all relevant project directories.
   reload_dirs.each do |dir|
     Dir.glob("#{root_dir}/#{dir}/**/*.rb").each { |f| load(f) }

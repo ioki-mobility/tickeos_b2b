@@ -33,7 +33,7 @@ RSpec.describe TickeosB2b::Product do
               <I18n name="24-h name Ticket for all public transports" name_matching="24-h name Karte f&#xFC;r alle &#xF6;ffentlichen Verkehrsmittel" tariff_zones_label="Zones" is_visible="true" culture="en">
                 <descriptionShort>For any rides from valididy date and time on all public transports.</descriptionShort>
                 <descriptionDetailed>24-h name Ticket {desc en} </descriptionDetailed>
-              </I18n> 
+              </I18n>
               <layoutBlock>
                 <I18n headline="" hint_text="" culture="de"/>
                 <I18n headline="" hint_text="" culture="en"/>
@@ -110,7 +110,7 @@ RSpec.describe TickeosB2b::Product do
       {
         first_name:      'Json',
         last_name:       'Statham',
-        validation_date: Time.now,
+        validation_date: ActiveSupport::TimeZone['Europe/Berlin'].local(2020, 9, 2, 23, 0, 0),
         sub_ref_id:      'kein Zuschlag'
       }
     end

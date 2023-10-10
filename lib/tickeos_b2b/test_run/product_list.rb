@@ -8,7 +8,7 @@ module TickeosB2b
 
         Nori.new.parse(
           Nokogiri::XML::Builder.new do |xml|
-            xml.TICKeosProxy(apiVersion: '1.0', version: Time.now.strftime('%Y-%m-%d'), instanceName: 'test') do
+            xml.TICKeosProxy(apiVersion: '1.0', version: ActiveSupport::TimeZone['Berlin'].now.strftime('%Y-%m-%d'), instanceName: 'test') do
               xml.txProductResponse(method: 'product_list') do
                 options.each do |opt|
                   opt = opt.transform_keys(&:to_sym)
