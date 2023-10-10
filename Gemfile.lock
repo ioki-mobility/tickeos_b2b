@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tickeos_b2b (0.1.0)
+    tickeos_b2b (0.2.0)
       activesupport
       faraday
       nokogiri
