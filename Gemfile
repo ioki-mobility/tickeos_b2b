@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'rake', '~> 13.2'
-gem 'rspec', '~> 3.0'
+gem 'rspec', '~> 3.13'
 
 group :development, :test do
   gem 'awesome_print'

@@ -25,7 +25,7 @@ GEM
     concurrent-ruby (1.2.2)
     crack (0.4.5)
       rexml
-    diff-lcs (1.5.0)
+    diff-lcs (1.5.1)
     docile (1.4.0)
     faraday (2.7.4)
       faraday-net_http (>= 2.0, < 3.1)
@@ -83,19 +83,19 @@ GEM
       ffi (~> 1.0)
     regexp_parser (2.8.1)
     rexml (3.3.9)
-    rspec (3.12.0)
-      rspec-core (~> 3.12.0)
-      rspec-expectations (~> 3.12.0)
-      rspec-mocks (~> 3.12.0)
-    rspec-core (3.12.2)
-      rspec-support (~> 3.12.0)
-    rspec-expectations (3.12.3)
+    rspec (3.13.0)
+      rspec-core (~> 3.13.0)
+      rspec-expectations (~> 3.13.0)
+      rspec-mocks (~> 3.13.0)
+    rspec-core (3.13.2)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.3)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.12.0)
-    rspec-mocks (3.12.5)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.2)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.12.0)
-    rspec-support (3.12.0)
+      rspec-support (~> 3.13.0)
+    rspec-support (3.13.2)
     rubocop (1.56.0)
       base64 (~> 0.1.1)
       json (~> 2.3)
@@ -145,7 +145,7 @@ DEPENDENCIES
   guard-rspec
   pry
   rake (~> 13.2)
-  rspec (~> 3.0)
+  rspec (~> 3.13)
   rubocop
   rubocop-rspec
   simplecov
