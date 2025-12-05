@@ -8,6 +8,7 @@ gem 'rspec', '~> 3.13'
 
 group :development, :test do
   gem 'awesome_print'
+  gem 'bigdecimal'
   gem 'pry'
   gem 'webmock'
   gem 'rubocop', require: false
